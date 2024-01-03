@@ -46,6 +46,39 @@ def get_all_products():
     products = Product.query.all()
     product_list = [{'id': product.id, 'name': product.name, 'quantity': product.quantity, 'price': product.price} for product in products]
     return jsonify(product_list)
+# Route to retrieve a specific product by ID
+@app.route('/products/<int:product_id>', methods=['GET'])
+def get_product(product_id):
+    product = Product.query.get(product_id)
+    if product is None:
+        return jsonify({'message': 'Product not found'}), 404
+    return jsonify({'id': product.id, 'name': product.name, 'quantity': product.quantity, 'price': product.price})
+
+# Route to update a product by ID
+@app.route('/products/<int:product_id>', methods=['PUT'])
+def update_product(product_id):
+    product = Product.query.get(product_id)
+    if product is None:
+        return jsonify({'message': 'Product not found'}), 404
+    
+    data = request.get_json()
+    product.name = data['name']
+    product.quantity = data['quantity']
+    product.price = data['price']
+    db.session.commit()
+    return jsonify({'message': 'Product updated successfully'})
+
+# Route to delete a product by ID
+@app.route('/products/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    product = Product.query.get(product_id)
+    if product is None:
+        return jsonify({'message': 'Product not found'}), 404
+    
+    db.session.delete(product)
+    db.session.commit()
+    return jsonify({'message': 'Product deleted successfully'})
+
 
 
 if __name__ == '__main__':
