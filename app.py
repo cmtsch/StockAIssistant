@@ -3,8 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+db_connection_name = 'glowing-palace-410114:europe-west3:products-db'
+
 # Configure the MySQL connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/chrisBase'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/chrisBase'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqldb://root:Products-Rot!$?@/{db_connection_name}/chrisBaseCloud'
 db = SQLAlchemy(app)
 
 
